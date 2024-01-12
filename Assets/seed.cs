@@ -21,19 +21,22 @@ public class seed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && isDrop == false)
+        if (!line.instance.isFinished)
         {
-            Drop();
+            if (Input.GetMouseButton(0) && isDrop == false)
+            {
+                Drop();
+            }
+            if (isDrop) return;
+
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            float halfWidth = this.transform.localScale.x * 0.5f;
+
+            mousePos.x = Mathf.Clamp(mousePos.x, -3.45f + halfWidth, 3.45f - halfWidth);
+            mousePos.y = 3.5f;
+
+            transform.position = mousePos;
         }
-        if (isDrop) return;
-
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        float halfWidth = this.transform.localScale.x * 0.5f;
-
-        mousePos.x = Mathf.Clamp(mousePos.x, -3.45f + halfWidth, 3.45f - halfWidth);
-        mousePos.y = 3.5f;
-
-        transform.position = mousePos;
     }
 
     private void Drop()
@@ -53,7 +56,7 @@ public class seed : MonoBehaviour
             if (seedNo == colseed.seedNo &&
                 !isMergeFlag &&
                 !colseed.isMergeFlag &&
-                seedNo < GameManager.Instance.MaxSeedNo - 1) 
+                seedNo < GameManager.Instance.MaxSeedNo - 1)
             {
                 isMergeFlag = true;
                 colseed.isMergeFlag = true;

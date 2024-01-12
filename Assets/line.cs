@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class line : MonoBehaviour
 {
+    public static line instance { get; private set; }
     private float stayTime;
+    public bool isFinished { get; set; } = false;
+    [SerializeField] private GameObject resultPanel;
+    [SerializeField] private Button restartButton;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        instance = this;
+        restartButton.onClick.AddListener(() => RestartButtonOnClick());
     }
 
     // Update is called once per frame
@@ -26,7 +33,8 @@ public class line : MonoBehaviour
             stayTime += Time.deltaTime;
             if(stayTime > 4.0f)
             {
-                SceneManager.LoadScene(0);
+                isFinished = true;
+                resultPanel.SetActive(true);
             }
         }
     }
@@ -37,5 +45,11 @@ public class line : MonoBehaviour
         {
             stayTime = 0;
         }
+    }
+
+    private void RestartButtonOnClick()
+    {
+        resultPanel.SetActive(false);
+        SceneManager.LoadScene(0);
     }
 }
